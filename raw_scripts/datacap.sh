@@ -1,5 +1,15 @@
 #!/bin/bash
 
+################################################################################
+# This script collects additional material which is required for carrying out  #
+# a basic healthcheck of the Puppet Enterprise Infrastructure nodes.           #
+# It is designed to be run as a Task from a specially created module, along    #
+# with a number of other Tasks to collect the entire body of data.             #
+################################################################################
+# Copyright 2018, Puppet, Inc.                                                 #
+# support@puppet.com                                                           #
+################################################################################
+
 # Sort out variables and housekeeping
 master=$(/bin/grep certname /etc/puppetlabs/puppet/puppet.conf | /bin/head -1 | /bin/awk '{print $NF}')
 workdir="/var/tmp/hcl_data"
@@ -8,8 +18,13 @@ if [ ! -d $workdir ]; then
   /bin/mkdir $workdir
 fi
 
-# Get node count
-echo "No. of Nodes: $(/bin/curl -sX GET http://localhost:8080/pdb/query/v4 --data-urlencode 'query=nodes[count()]{ node_state = "active" }')" > $dumpfile 2>&1
+# Start Script logic
+echo "Starting data capture..."
+echo "Run start: $(/bin/date)" > $dumpfile 2>&1
+echo "" >> $dumpfile 2>&1
+
+# Get node count (assumes monolithic)
+echo "No. of Nodes: $(/bin/curl -sX GET http://localhost:8080/pdb/query/v4 --data-urlencode 'query=nodes[count()]{ node_state = "active" }')" >> $dumpfile 2>&1
 echo "" >> $dumpfile 2>&1
 
 # Get Number of environments
@@ -43,3 +58,6 @@ else
 fi
 
 # Get metrics if module installed
+
+
+echo "Data collected to $dumpfile"
