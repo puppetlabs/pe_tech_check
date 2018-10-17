@@ -58,6 +58,10 @@ else
 fi
 
 # Get metrics if module installed
-
+if [ -d /opt/puppetlabs/puppet-metrics-collector ]; then
+  cd $workdir
+  echo "Metrics tarball created" >> $dumpfile 2>&1
+  /opt/puppetlabs/bin/puppet-metrics-collector create-tarball >> $dumpfile 2>&1
+fi
 
 echo "Data collected to $dumpfile"
