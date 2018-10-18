@@ -54,13 +54,20 @@ echo "No of modules in Production environment: $(/bin/ls /etc/puppetlabs/code/en
 echo "Code directory size: $(/bin/du -sh /etc/puppetlabs/code)" >> $dumpfile 2>&1
 echo "" >> $dumpfile 2>&1
 
-# Classification dump
+# Classification and Hiera customization dump
 echo "Classification for $master" >> $dumpfile 2>&1
 /bin/curl -sX POST https://$console:4433/classifier-api/v1/classified/nodes/$master \
 --cert /etc/puppetlabs/puppet/ssl/certs/$master.pem \
 --key /etc/puppetlabs/puppet/ssl/private_keys/$master.pem \
 --cacert /etc/puppetlabs/puppet/ssl/certs/ca.pem -H "Content-Type: application/json" \
 | /bin/python -m json.tool >> $dumpfile 2>&1
+echo "" >> $dumpfile 2>&1
+echo "Hieradata grep for java_args and JRuby config" >> $dumpfile 2>&1
+if [ -d /etc/puppetlabs/code/environments/production/data ]; then
+  /bin/grep -E -A5 "::java_args|::jruby_max_active_instances" /etc/puppetlabs/code/environments/production/data/* >> $dumpfile 2>&1
+else
+  /bin/grep -E -A5 "::java_args|::jruby_max_active_instances" /etc/puppetlabs/code/environments/production/hieradata/* >> $dumpfile 2>&1
+fi
 echo "" >> $dumpfile 2>&1
 
 # Get output of tuning script if version is greater than PE20128
