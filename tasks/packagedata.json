@@ -1,0 +1,11 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "This task packages up all the data captured by the previous two tasks.",
+  "parameters": {
+    "identifier": {
+      "description" : "A unique id, normally the company name or a ticket ID. Only alphanumeric characters accepted.",
+      "type" : "Pattern[A-Za-z0-9]+"
+    }
+  }
+}
