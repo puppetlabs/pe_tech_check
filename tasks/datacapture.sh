@@ -46,6 +46,8 @@ echo "No. of Nodes: $(/bin/curl -sX GET https://$puppetdb:8081/pdb/query/v4 \
 --data-urlencode 'query=nodes[count()]{ node_state = "active" }')" >> $dumpfile 2>&1
 echo "" >> $dumpfile 2>&1
 
+
+
 # Get Number of environments
 echo "No of environments: $(/bin/ls /etc/puppetlabs/code/environments/ | wc -l)" >> $dumpfile 2>&1
 # Get no of modules in Production environment
@@ -54,23 +56,42 @@ echo "No of modules in Production environment: $(/bin/ls /etc/puppetlabs/code/en
 echo "Code directory size: $(/bin/du -sh /etc/puppetlabs/code)" >> $dumpfile 2>&1
 echo "" >> $dumpfile 2>&1
 
+# Get license data
+echo "License Info:" >> $dumpfile 2>&1
+/bin/cat /etc/puppetlabs/license.key >> $dumpfile 2>&1
+
+# Check for HA Setup
+echo "Puppet Infrastructure Status Output:" >> $dumpfile 2>&1
+/opt/puppetlabs/bin/puppet-infrastructure status >> $dumpfile 2>&1
+
 # Classification and Hiera customization dump
-echo "Classification for $master" >> $dumpfile 2>&1
-/bin/curl -sX POST https://$console:4433/classifier-api/v1/classified/nodes/$master \
+echo "Classification customisations for Master nodes (MoM and CMs)" >> $dumpfile 2>&1
+/bin/curl -sX GET https://$puppetdb:8081/pdb/query/v4 \
 --cert /etc/puppetlabs/puppet/ssl/certs/$master.pem \
 --key /etc/puppetlabs/puppet/ssl/private_keys/$master.pem \
---cacert /etc/puppetlabs/puppet/ssl/certs/ca.pem -H "Content-Type: application/json" \
-| /bin/python -m json.tool >> $dumpfile 2>&1
+--cacert /etc/puppetlabs/puppet/ssl/certs/ca.pem \
+--data-urlencode 'query=resources[certname, parameters]{type="Class" and title="Puppet_enterprise::Profile::Master"}' \
+| python -m json.tool >> $dumpfile 2>&1
 echo "" >> $dumpfile 2>&1
-echo "Hieradata grep for java_args and JRuby config" >> $dumpfile 2>&1
-if [ -d /etc/puppetlabs/code/environments/production/data ]; then
-  /bin/grep -E -A5 "::java_args|::jruby_max_active_instances" /etc/puppetlabs/code/environments/production/data/* >> $dumpfile 2>&1
-else
-  /bin/grep -E -A5 "::java_args|::jruby_max_active_instances" /etc/puppetlabs/code/environments/production/hieradata/* >> $dumpfile 2>&1
-fi
+echo "Classification customisations for PuppetDB node" >> $dumpfile 2>&1
+/bin/curl -sX GET https://$puppetdb:8081/pdb/query/v4 \
+--cert /etc/puppetlabs/puppet/ssl/certs/$master.pem \
+--key /etc/puppetlabs/puppet/ssl/private_keys/$master.pem \
+--cacert /etc/puppetlabs/puppet/ssl/certs/ca.pem \
+--data-urlencode 'query=resources[certname, parameters]{type="Class" and title="Puppet_enterprise::Profile::Puppetdb"}' \
+| python -m json.tool >> $dumpfile 2>&1
+echo "" >> $dumpfile 2>&1
+echo "Classification customisations for Console node" >> $dumpfile 2>&1
+/bin/curl -sX GET https://$puppetdb:8081/pdb/query/v4 \
+--cert /etc/puppetlabs/puppet/ssl/certs/$master.pem \
+--key /etc/puppetlabs/puppet/ssl/private_keys/$master.pem \
+--cacert /etc/puppetlabs/puppet/ssl/certs/ca.pem \
+--data-urlencode 'query=resources[certname, parameters]{type="Class" and title="Puppet_enterprise::Profile::Console"}' \
+| python -m json.tool >> $dumpfile 2>&1
 echo "" >> $dumpfile 2>&1
 
-# Get output of tuning script if version is greater than PE20128
+
+# Get output of tuning script if version is greater than PE2018
 if [ "$(/opt/puppetlabs/puppet/bin/facter -p pe_build | /bin/awk --field-separator=. '{print $1}')" -gt '2017' ]; then
   echo "PE version greater than PE 2017.3.z, running Tuning Script for current settings..." >> $dumpfile 2>&1
 	/opt/puppetlabs/server/apps/enterprise/bin/puppet-infrastructure tune --force --current >> $dumpfile 2>&1
