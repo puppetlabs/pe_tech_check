@@ -1,7 +1,11 @@
 {
   "puppet_task_version": 1,
   "supports_noop": false,
-  "description": "A short description of this task",
+  "description": "This task captures additional data, and packages up all data placed in the aggregation directory.",
   "parameters": {
+    "identifier": {
+      "description" : "A unique id, normally the company name or a ticket ID. Only alphanumeric characters accepted.",
+      "type" : "Pattern[/\\A[a-z0-9_,]+\\Z/]"
+    }
   }
 }

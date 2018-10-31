@@ -9,7 +9,7 @@
     },
     "password": {
       "description": "This is the password for the user defined above",
-      "type": "[String[1]",
+      "type": "String[1]",
       "sensitive": true
     }
   }
