@@ -1,0 +1,7 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "This Task runs the support script on a single node, capturing only 1 day of logs. This Task is designed to be called by a wrapper task which executes this one on each infrastructure node.",
+  "parameters": {
+  }
+}

@@ -1,14 +1,16 @@
 {
   "name": "spynappels-healthcheck_lite",
-  "version": "0.1.0",
+  "version": "0.2.3",
   "author": "Stefan Pijnappels",
-  "summary": "",
+  "summary": "Provides Tasks to capture data for healthcheck lite",
   "license": "Apache-2.0",
-  "source": "",
+  "source": "https://github.com/puppetlabs/healthcheck_lite",
+  "project_page": "https://github.com/puppetlabs/healthcheck_lite",
+  "issues_url": "https://github.com/puppetlabs/healthcheck_lite/issues",
   "dependencies": [
     {
-      "name": "puppetlabs/puppetlabs_metrics_collector",
-      "version_requirement": ">= 5.0.0 < 6.0.0"
+      "name": "puppetlabs/puppet_metrics_collector",
+      "version_requirement": ">= 4.0.0 < 6.0.0"
     }
   ],
   "operatingsystem_support": [

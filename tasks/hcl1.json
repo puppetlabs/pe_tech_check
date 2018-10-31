@@ -1,0 +1,16 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "This Task creates the Support Script tarballs on all infrastructure nodes and creates the aggregation directory on the Master/MoM if it does not exist.",
+  "parameters": {
+    "login": {
+      "description": "This is the username for a user with RBAC permission to run Tasks",
+      "type": "String[1]"
+    },
+    "password": {
+      "description": "This is the password for the user defined above",
+      "type": "[String[1]",
+      "sensitive": true
+    }
+  }
+}
