@@ -46,7 +46,7 @@ This task takes 2 input parameters, which are the username and password for a us
 
 ### Copy the Support Script output
 
-Copy the resultant Support Script tarballs from all infrastructure nodes to the `/var/tmp/hcl_data` directory on the Primary Master. The location of the tarball can be found in the output of the healthcheck_lite::supportcapture task on each Infrastructure node.
+Copy the resultant Support Script tarballs from all infrastructure nodes to the `/var/tmp/hcl_data` directory on the Primary Master. The location of the tarball can be found in the output of the `healthcheck_lite::supportcapture` task on each Infrastructure node.
 
 ### Run the healthcheck_lite::hcl2 task
 
