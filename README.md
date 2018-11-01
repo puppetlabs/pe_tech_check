@@ -38,7 +38,7 @@ If puppet_metrics_collector is not already being used, enable the Puppet Metrics
 Trigger a Puppet Run on the PE Infrastructure group or let the scheduled Puppet runs happen.
 Allow at least 24 hours to ensure as much pertinent information is captured as possible.
 
-## Using healthcheck_lite
+## Usage
 
 ### Run the healthcheck_lite::hcl1 task
 
