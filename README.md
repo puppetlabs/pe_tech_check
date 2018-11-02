@@ -36,13 +36,13 @@ puppet code deploy production --wait
 
 If puppet_metrics_collector is not already being used, enable the Puppet Metrics Collector by adding the class puppet_metrics_collector to the PE Infrastructure classification group. For more information on puppetlabs/puppet_metrics_collector please see the documentation for that module. <https://forge.puppet.com/puppetlabs/puppet_metrics_collector/readme.>
 Trigger a Puppet Run on the PE Infrastructure group or let the scheduled Puppet runs happen.
-Allow at least 24 hours to ensure as much pertinent information is captured as possible.
+Allow at least 24 hours of metrics collection to ensure as much pertinent information is captured as possible.
 
 ## Usage
 
 ### Run the healthcheck_lite::hcl1 task
 
-This task takes 2 input parameters, which are the username and password for a user account which has RBAC permissions to run Tasks on the infrastructure nodes. These are used to create a short lived Authentication Token which will be used to run the healthcheck-related tasks. After creating the token and writing it to a file, `healthcheck_lite::hcl1` task executes PE Support Script (the healthcheck_lite::supportcapture task) on all infrastructure nodes (Primary Master/Compile Masters, PuppetDB and Console nodes if present).
+This task takes 2 input parameters, which are the username and password for a user account which has RBAC permissions to run Tasks on the infrastructure nodes. These are used to create a short lived Authentication Token which will be used to run the healthcheck-related tasks. After creating the token and writing it to a file, `healthcheck_lite::hcl1` task executes the PE Support Script (the healthcheck_lite::supportcapture task) on all infrastructure nodes (Primary Master/Compile Masters, PuppetDB and Console nodes if present).
 
 ### Copy the Support Script output
 
