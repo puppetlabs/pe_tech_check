@@ -38,6 +38,9 @@ echo "PuppetDB node is $puppetdb" >> $dumpfile 2>&1
 echo "Console Node is $console" >> $dumpfile 2>&1
 echo "" >> $dumpfile 2>&1
 
+# Get PE version
+echo "PE version: $(/usr/local/bin/facter -p pe_server_version)" >> $dumpfile 2>&1
+
 # Get node count
 echo "No. of Nodes: $(/bin/curl -sX GET https://$puppetdb:8081/pdb/query/v4 \
 --cert /etc/puppetlabs/puppet/ssl/certs/$master.pem \
