@@ -35,7 +35,7 @@ If your Primary Master has environment caching enabled (which is the case by def
 
 ### Preparation before using healthcheck_lite
 
-If `puppet_metrics_collector` is not already being used, enable the Puppet Metrics Collector by adding the class puppet_metrics_collector to the PE Infrastructure classification group. For more information on puppetlabs/puppet_metrics_collector please see the documentation for that module. <https://forge.puppet.com/puppetlabs/puppet_metrics_collector/readme.>
+If `puppet_metrics_collector` is not already being used, enable the Puppet Metrics Collector by adding the class puppet_metrics_collector to the PE Infrastructure classification group. For more information on puppetlabs/puppet_metrics_collector please see the documentation for that module: <https://forge.puppet.com/puppetlabs/puppet_metrics_collector/readme.>
 Trigger a Puppet Run on the PE Infrastructure group or let the scheduled Puppet runs happen.
 Allow at least 24 hours of metrics collection to ensure as much pertinent information is captured as possible.
 
