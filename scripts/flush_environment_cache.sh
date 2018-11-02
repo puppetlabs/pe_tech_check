@@ -1,20 +1,15 @@
 #!/bin/bash
+#
 # Flushes the environment cache
 #
 function curl_wrapper()
 {
-  [ "$g_verbose" = 'true' ] && echo "command: curl $@"
-  output=$(curl "$@")
+  echo "command: curl $@"
+  curl "$@"
   exitcode=$?
-  if [ "$g_verbose" = 'true' ]; then
-    echo "output json:"
-    echo "$output" | python -m json.tool || echo "raw output: $output"
-    echo "exitcode: $exitcode"
-    echo
-  fi
+  echo "exitcode: $exitcode"
 }
 
-g_verbose='true'
 g_certname=$(/opt/puppetlabs/bin/puppet config print certname --section agent)
 
 curl_wrapper -ks --request DELETE --header "Content-Type: application/json" \
