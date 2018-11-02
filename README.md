@@ -15,7 +15,7 @@ This module gathers data from the PE Infrastructure nodes for analysis as part o
 
 ### Installing the healthcheck_lite module
 
-To inestall the `healthcheck_lite` module execute this command on the Primary Master:
+To install the `healthcheck_lite` module execute this command on the Primary Master:
 
 ```bash
 puppet module install puppetlabs-healthcheck_lite
