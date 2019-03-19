@@ -1,0 +1,5 @@
+{
+  "description": "Collect data for the Puppet Health Check Lite service",
+  "parameters": {},
+  "supports_noop": false
+}

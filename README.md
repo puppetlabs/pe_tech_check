@@ -11,48 +11,75 @@
 
 ## Description
 
-This module gathers data from the PE Infrastructure nodes for analysis as part of the HealthCheck Lite Service offering. It primarily does this by gathering data in the form of the Support Script, as well as an additional data capture script. It will also gather up the metrics from the puppetlabs/puppet_metrics_collector module if installed and enabled.
+This module collects Puppet Enterprise data for analysis as part of the HealthCheck Lite service offering.
+The majority of the data is collected by the Puppet Enterprise Support Script.
+
+https://puppet.com/docs/pe/latest/getting_support_for_pe.html#pe-support-script
 
 ## Setup
 
-### Installing the healthcheck_lite module
+### Install the `healthcheck_lite` module
 
-To install the `healthcheck_lite` module execute this command on the Primary Master:
+To install the `healthcheck_lite` module, execute the following command on the Primary Master.
 
 ```bash
 puppet module install puppetlabs-healthcheck_lite --modulepath=/opt/puppetlabs/puppet/modules
 ```
 
-This will install the modules into the system module path, making the tasks and classes available without interfering with the normal code directory. Installing here is unlikely to survive a PE upgrade, but the same installation method can be used after an upgrade if required.
+Doing so will install this module into the base module path, making its tasks available without interfering with other modules.
 
-The `healthcheck_lite` module has a dependency for the `puppetlabs/puppet_metrics_collector` module. If the `puppetlabs/puppet_metrics_collector` module was already installed and classified in the standard code directory, it will be re-installed in this alternate location, but this will not cause any issues.
+### Enable the `healthcheck_lite` module tasks
 
-If your Primary Master has environment caching enabled (which is the case by default if Code Manager is being used), you need to flush the environment before the new code will become available to to Puppet Enterprise.
+If your Primary Master has environment caching enabled (which is true by default if Code Manager is being used), flush the environment cache to enable the tasks in this module.
+
+Run the following command on the Primary Master:
 
 ```bash
 /opt/puppetlabs/puppet/modules/healthcheck_lite/scripts/flush_environment_cache.sh
 ```
 
-### Preparation before using healthcheck_lite
-
-If `puppet_metrics_collector` is not already being used, enable the Puppet Metrics Collector by adding the class puppet_metrics_collector to the PE Infrastructure classification group. For more information on puppetlabs/puppet_metrics_collector please see the documentation for that module: <https://forge.puppet.com/puppetlabs/puppet_metrics_collector/readme.>
-Trigger a Puppet Run on the PE Infrastructure group or let the scheduled Puppet runs happen.
-Allow at least 24 hours of metrics collection to ensure as much pertinent information is captured as possible.
-
 ## Usage
 
-### Run the healthcheck_lite::hcl1 task
+### Run the `healthcheck_lite::configure` task
 
-This task takes 2 input parameters, which are the username and password for a user account which has RBAC permissions to run Tasks on the infrastructure nodes. These are used to create a short lived Authentication Token which will be used to run the healthcheck-related tasks. After creating the token and writing it to a file, `healthcheck_lite::hcl1` task executes the PE Support Script (the `healthcheck_lite::supportcapture` task) on all infrastructure nodes (Primary Master/Compile Masters, PuppetDB and Console nodes if present).
+In the Console, run the `healthcheck_lite::configure` task, targeting the Primary Master.
 
-### Copy the Support Script output
+Or, from the command line of the Primary Master, run:
 
-Copy the resultant Support Script tarballs from all infrastructure nodes to the `/var/tmp/hcl_data` directory on the Primary Master. The location of the tarball can be found in the output of the `healthcheck_lite::supportcapture` task on each Infrastructure node.
+```bash
+puppet task run healthcheck_lite::configure --nodes $(facter -p certname)
+```
 
-### Run the healthcheck_lite::hcl2 task
+#### Task parameters
 
-This task will capture some additional data on the Primary Master, and then package all this data, including the Support Script tarballs copied to the Primary Master, up for forwarding to Puppet. It takes a single parameter which is an identifier (allowed characters are all alphanumeric characters plus underscore) which is to be agreed with Puppet during the Healthcheck Lite intake conversation. This task also cleans up after itself by deleting the working directory and the temporary Authentication Token.
+##### `install_pe_metrics` (Boolean, default: true)
+
+Temporarily install and configure the `puppet_metrics_collector` module, if it is not already installed.
+
+https://forge.puppet.com/puppetlabs/puppet_metrics_collector
+
+##### `install_pe_tune` (Boolean, default: true)
+
+Temporarily install the `puppet pe tune` subcommand via the `pe_tune` module.
+The `pe_tune` module is the upstream version of the `puppet infrastructure tune` subcommand.
+
+https://github.com/tkishel/pe_tune
+
+> Note Allow at least one day after executing the `healthcheck_lite::configure` task for the `puppet_metrics_collector` module to collect metrics data before executing the `healthcheck_lite::collect` task.
+
+### Run the `healthcheck_lite::collect` task
+
+In the Console, run the `healthcheck_lite::collect` task, targeting the Primary Master.
+
+Or, from the command line of the Primary Master, run:
+
+```bash
+puppet task run healthcheck_lite::collect --nodes $(facter -p certname)
+```
+
+When finished, the `healthcheck_lite::collect` task will output a list of files.
+Upload those files from the Primary Master to Puppet for analysis.
 
 ## Development
 
-This module is developed and maintained by the Puppet Support and Technical Sales teams.
+This module is developed and maintained by the Puppet Enterprise Support and Technical Sales teams.

@@ -1,0 +1,14 @@
+{
+  "description": "Install and configure modules for the Puppet Health Check Lite service",
+  "parameters": {
+     "install_pe_metrics": {
+       "description": "Install the 'puppet_metrics_collector' module. Defaults to 'true'",
+       "type": "Optional[Variant[Enum['true','false']]]"
+     },
+     "install_pe_tune": {
+       "description": "Install the 'puppet pe tune' module. Defaults to 'true'",
+       "type": "Optional[Variant[Enum['true','false']]]"
+     }
+  },
+  "supports_noop": false
+}
