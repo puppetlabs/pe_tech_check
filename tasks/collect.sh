@@ -11,6 +11,7 @@ mkdir -p $output_directory
 rm -f $output_directory/*.gz
 
 echo "Puppet Enterprise HealthCheck Lite: $(date)" > $output_file
+echo "Run as $(whoami)" >> $output_file
 echo >> $output_file
 
 grep -i -v UUID /etc/puppetlabs/license.key >> $output_file 2>/dev/null
@@ -27,12 +28,12 @@ if [ -d $temp_module_directory/pe_tune ]; then
   puppet pe tune --modulepath $temp_module_directory --current >> $output_file 2>/dev/null
   echo >> $output_file
 else
-  echo 'puppet infra tune' >> $output_file
-  puppet infra tune >> $output_file 2>/dev/null
+  echo '/opt/puppetlabs/bin/puppet-infrastructure tune' >> $output_file
+  /opt/puppetlabs/bin/puppet-infrastructure tune >> $output_file 2>/dev/null
   echo >> $output_file
 
-  echo 'puppet infra tune --current' >> $output_file
-  puppet infra tune --current >> $output_file 2>/dev/null
+  echo '/opt/puppetlabs/bin/puppet-infrastructure tune --current' >> $output_file
+  /opt/puppetlabs/bin/puppet-infrastructure --current >> $output_file 2>/dev/null
   echo >> $output_file
 fi
 
