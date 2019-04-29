@@ -1,5 +1,6 @@
 {
   "description": "Collect data for the Puppet Health Check Lite service",
   "parameters": {},
-  "supports_noop": false
+  "supports_noop": false,
+  "files": ["healthcheck_lite/files/common.sh"]
 }

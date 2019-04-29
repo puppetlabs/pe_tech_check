@@ -20,7 +20,27 @@ https://puppet.com/docs/pe/latest/getting_support_for_pe.html#pe-support-script
 
 ### Install the `healthcheck_lite` module
 
-To install the `healthcheck_lite` module, execute the following command on the Primary Master.
+#### Using Bolt
+
+Bolt is the preffered installation and execution method and can be used either on the master or another machine with connectivity to the master. Firstly, follow the instruction for [installing Bolt](https://puppet.com/docs/bolt/latest/bolt_installing.html). PE customers are *strongly* encouraged to follow the note about directly installing the package if installing on a PE node.
+
+The following block of code will create a Boltdir under the logged in user's home directory and set up the module:
+
+```bash
+mkdir -p ~/Boltdir
+cd !$
+
+cat >Puppetfile <<EOF
+mod 'puppetlabs-stdlib'
+mod 'puppetlabs-healthcheck_lite'
+EOF
+
+bolt puppetfile install
+```
+
+#### Manually
+
+To manually install the `healthcheck_lite` module, execute the following command on the Primary Master.
 
 ```bash
 puppet module install puppetlabs-healthcheck_lite --modulepath=/opt/puppetlabs/puppet/modules
@@ -28,11 +48,7 @@ puppet module install puppetlabs-healthcheck_lite --modulepath=/opt/puppetlabs/p
 
 Doing so will install this module into the base module path, making its tasks available without interfering with other modules.
 
-### Enable the `healthcheck_lite` module tasks
-
-If your Primary Master has environment caching enabled (which is true by default if Code Manager is being used), flush the environment cache to enable the tasks in this module.
-
-Run the following command on the Primary Master:
+If your Primary Master has environment caching enabled (which is true by default if Code Manager is being used), flush the environment cache to enable the tasks in this module by running the following command on the Primary Master:
 
 ```bash
 /opt/puppetlabs/puppet/modules/healthcheck_lite/scripts/flush_environment_cache.sh
@@ -42,12 +58,22 @@ Run the following command on the Primary Master:
 
 ### Run the `healthcheck_lite::configure` task
 
-In the Console, run the `healthcheck_lite::configure` task, targeting the Primary Master.
-
-Or, from the command line of the Primary Master, run:
+#### Via Bolt
 
 ```bash
-puppet task run healthcheck_lite::configure --nodes $(facter -p certname)
+bolt task run healthcheck_lite::configure --nodes <master_fqdn>
+```
+
+#### Via the Console
+
+In the Console, run the `healthcheck_lite::configure` task, targeting the Primary Master.
+
+#### Manually
+
+From the command line of the Primary Master, run:
+
+```bash
+puppet task run healthcheck_lite::configure --nodes $(hostname -f)
 ```
 
 #### Task parameters
@@ -69,9 +95,19 @@ https://github.com/tkishel/pe_tune
 
 ### Run the `healthcheck_lite::collect` task
 
+#### Via Bolt
+
+```bash
+bolt task run healthcheck_lite::collect --nodes <master_fqdn>
+```
+
+#### Via the Console
+
 In the Console, run the `healthcheck_lite::collect` task, targeting the Primary Master.
 
-Or, from the command line of the Primary Master, run:
+#### Manually
+
+From the command line of the Primary Master, run:
 
 ```bash
 puppet task run healthcheck_lite::collect --nodes $(facter -p certname)
