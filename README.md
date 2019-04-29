@@ -20,7 +20,27 @@ https://puppet.com/docs/pe/latest/getting_support_for_pe.html#pe-support-script
 
 ### Install the `pe_tech_check` module
 
-To install the `pe_tech_check` module, execute the following command on the Primary Master.
+#### Using Bolt
+
+Bolt is the preffered installation and execution method and can be used either on the master or another machine with connectivity to the master. Firstly, follow the instructions for [installing Bolt](https://puppet.com/docs/bolt/latest/bolt_installing.html). PE customers are *strongly* encouraged to follow the note about directly installing the package if installing on a PE node.
+
+The following block of code will create a Boltdir under the logged in user's home directory and set up the module:
+
+```bash
+mkdir -p ~/Boltdir
+cd !$
+
+cat >Puppetfile <<EOF
+mod 'puppetlabs-stdlib'
+mod 'puppetlabs-pe_tech_check'
+EOF
+
+bolt puppetfile install
+```
+
+#### Manually
+
+To manually install the `pe_tech_check` module, execute the following command on the Primary Master.
 
 ```bash
 puppet module install puppetlabs-pe_tech_check --modulepath=/opt/puppetlabs/puppet/modules

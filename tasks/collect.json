@@ -1,5 +1,6 @@
 {
   "description": "Collect data for the PE Tech Check service",
   "parameters": {},
-  "supports_noop": false
+  "supports_noop": false,
+  "files": ["healthcheck_lite/files/common.sh"]
 }
