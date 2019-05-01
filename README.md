@@ -73,7 +73,7 @@ In the Console, run the `healthcheck_lite::configure` task, targeting the Primar
 From the command line of the Primary Master, run:
 
 ```bash
-puppet task run healthcheck_lite::configure --nodes $(hostname -f)
+puppet task run healthcheck_lite::configure --nodes $(puppet config print certname)
 ```
 
 #### Task parameters
@@ -110,7 +110,7 @@ In the Console, run the `healthcheck_lite::collect` task, targeting the Primary 
 From the command line of the Primary Master, run:
 
 ```bash
-puppet task run healthcheck_lite::collect --nodes $(facter -p certname)
+puppet task run healthcheck_lite::collect --nodes $(puppet config print certname)
 ```
 
 When finished, the `healthcheck_lite::collect` task will output a list of files.
