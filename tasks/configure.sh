@@ -51,7 +51,7 @@ if [[ "$install_pe_tune" != "false" ]]; then
   _tmp_tune="$(mktemp)"
   _tmp_tune_dir="$(mktemp -d)"
 
-  curl -sL -o "$_tmp_tune" "https://github.com/tkishel/pe_tune/archive/$pe_tune_version.tar.gz" || {
+  curl -sL -o "$_tmp_tune" "https://github.com/tkishel/pe_tune/archive/${pe_tune_version}.tar.gz" || {
     fail "Error downloading tarball"
   }
 

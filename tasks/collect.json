@@ -1,6 +1,12 @@
 {
   "description": "Collect data for the PE Tech Check service",
-  "parameters": {},
+    "parameters": {
+    "ticket": {
+      "description": "Ticket number associated with a support case",
+      "type": "Optional[String[1]]"
+    }
+
+  },
   "supports_noop": false,
   "files": ["healthcheck_lite/files/common.sh"]
 }

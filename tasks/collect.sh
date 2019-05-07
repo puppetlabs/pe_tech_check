@@ -6,6 +6,11 @@ _debug () {
   echo "DEBUG: running $@" >>"$_tmp.debug"
 }
 
+# $1 = argument to check for
+has_opt() {
+  grep -q -- "$1" "$_tmp_support"
+}
+
 declare PT__installdir
 source "$PT__installdir/healthcheck_lite/files/common.sh"
 [[ $PATH =~ "/opt/puppetlabs/bin" ]] || export PATH="/opt/puppetlabs/bin:${PATH}"
@@ -19,8 +24,15 @@ tmp_dir=/var/tmp/puppet_modules
 output_dir=/var/tmp/health_check_lite
 output_file="$output_dir/health_check_lite.txt"
 support_script_output_file="$output_dir/support_script_output.log"
-# Not currently a parameter
-ticket="${ticket:-HCL}"
+
+# Dump command help to a file in the interest of speed
+_tmp_support="$(mktemp)"
+puppet enterprise support --help &>"$_tmp_support"
+
+has_opt '--log-age' && sup_args+=("--log-age" "3")
+has_opt '--classifier' && sup_args+=("--classifier")
+has_opt '--dir' && sup_args+=("--dir" "$output_dir")
+has_opt '--ticket' && sup_args+=("--ticket" "${ticket:-HCL}")
 
 [[ -d $output_dir ]] || {
   mkdir "$output_dir" || fail "Error creating output directory"
@@ -37,18 +49,6 @@ echo "Puppet Enterprise HealthCheck Lite: $(date)"
 echo
 
 grep -i -v UUID /etc/puppetlabs/license.key
-
-if puppet enterprise support --help | grep -q -- '--log-age'; then
-  sup_args+=("--log-age" "3")
-fi
-
-if puppet enterprise support --help | grep -q -- '--classifier'; then
-  sup_args+=("--classifier")
-fi
-
-if puppet enterprise support --help | grep -q -- '--dir'; then
-  sup_args+=("--dir" "$output_dir")
-fi
 
 puppet enterprise support "${sup_args[@]}" &> "$support_script_output_file"
 
