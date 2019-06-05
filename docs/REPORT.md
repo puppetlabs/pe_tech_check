@@ -1,4 +1,4 @@
-# Healthcheck Lite Report for $customer <!-- omit in toc -->
+# PE Tech Check Report for $customer <!-- omit in toc -->
 Date: dd Month yyyy
 
 - [Introduction](#introduction)
@@ -14,7 +14,7 @@ Date: dd Month yyyy
 
 # Introduction
 
-Healthcheck Lite is a Puppet assessment offered to \$customer. The goals of Healthcheck Lite are:
+PE Tech Check is a Puppet assessment offered to \$customer. The goals of PE Tech Check are:
 
 - Create a snapshot \$customer's Puppet Infrastructure architecture
 - Review configuration of the Primary Master, PuppetDB, Compile Masters, code
@@ -23,7 +23,7 @@ Healthcheck Lite is a Puppet assessment offered to \$customer. The goals of Heal
 
 The report is produced using the following tools / practices:
 
-1. Supplying \$customer with the 'healthcheck_lite' analysis tool to be executed on the Primary Master and analysing its output
+1. Supplying \$customer with the 'pe_tech_check' analysis tool to be executed on the Primary Master and analysing its output
 2. A conversation about the network architecture and other relevant topics
 
 # Environment overview
