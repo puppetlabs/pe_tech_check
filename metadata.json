@@ -1,12 +1,12 @@
 {
-  "name": "puppetlabs-healthcheck_lite",
+  "name": "puppetlabs-pe_tech_check",
   "version": "1.0.0",
   "author": "Puppet Enterprise",
-  "summary": "Provides Tasks to capture data for healthcheck lite",
+  "summary": "Provides Tasks to capture data for PE Tech Check",
   "license": "Apache-2.0",
-  "source": "https://github.com/puppetlabs/healthcheck_lite",
-  "project_page": "https://github.com/puppetlabs/healthcheck_lite",
-  "issues_url": "https://github.com/puppetlabs/healthcheck_lite/issues",
+  "source": "https://github.com/puppetlabs/pe_tech_check",
+  "project_page": "https://github.com/puppetlabs/pe_tech_check",
+  "issues_url": "https://github.com/puppetlabs/pe_tech_check/issues",
   "dependencies": [],
   "operatingsystem_support": [
     {
