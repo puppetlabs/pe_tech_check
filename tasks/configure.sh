@@ -20,7 +20,7 @@ pe_tune_version='2.3.0'
 old_metrics_module='pe_metric_curl_cron_jobs'
 new_metrics_module='puppet_metrics_collector'
 
-echo "Configuring HealthCheck Lite"
+echo "Configuring PE Tech Check"
 
 puppet_module_path=$(puppet config print modulepath 2>/dev/null)
 if [ $? -ne 0 ]; then

@@ -1,5 +1,5 @@
 {
-  "description": "Collect data for the Puppet Health Check Lite service",
+  "description": "Collect data for the PE Tech Check service",
   "parameters": {},
   "supports_noop": false
 }
