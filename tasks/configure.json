@@ -1,5 +1,5 @@
 {
-  "description": "Install and configure modules for the Puppet Health Check Lite service",
+  "description": "Install and configure modules for the PE Tech Check service",
   "parameters": {
      "install_pe_metrics": {
        "description": "Install the 'puppet_metrics_collector' module. Defaults to 'true'",
