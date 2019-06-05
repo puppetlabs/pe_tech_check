@@ -65,7 +65,7 @@ The `pe_tune` module is the upstream version of the `puppet infrastructure tune`
 
 https://github.com/tkishel/pe_tune
 
-> **Note:&& Allow at least one day after executing the `pe_tech_check::configure` task for the `puppet_metrics_collector` module to collect metrics data before executing the `pe_tech_check::collect` task.
+> **Note:** Allow at least one day after executing the `pe_tech_check::configure` task for the `puppet_metrics_collector` module to collect metrics data before executing the `pe_tech_check::collect` task.
 
 ### Run the `pe_tech_check::collect` task
 
