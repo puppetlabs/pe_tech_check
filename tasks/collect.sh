@@ -27,12 +27,12 @@ if [ -d $temp_module_directory/pe_tune ]; then
   puppet pe tune --modulepath $temp_module_directory --current >> $output_file 2>/dev/null
   echo >> $output_file
 else
-  echo 'puppet infra tune' >> $output_file
-  puppet infra tune >> $output_file 2>/dev/null
+  echo '/opt/puppetlabs/bin/puppet-infrastructure tune' >> $output_file
+  /opt/puppetlabs/bin/puppet-infrastructure tune >> $output_file 2>/dev/null
   echo >> $output_file
 
-  echo 'puppet infra tune --current' >> $output_file
-  puppet infra tune --current >> $output_file 2>/dev/null
+  echo '/opt/puppetlabs/bin/puppet-infrastructure tune --current' >> $output_file
+  /opt/puppetlabs/bin/puppet-infrastructure tune --current >> $output_file 2>/dev/null
   echo >> $output_file
 fi
 
