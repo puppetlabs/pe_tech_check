@@ -2,13 +2,13 @@
 
 (( $EUID == 0 )) || fail "This utility must be run as root"
 
+declare PT__installdir
+source "$PT__installdir/pe_tech_check/files/common.sh"
 [[ $PATH =~ "/opt/puppetlabs/bin" ]] || export PATH="/opt/puppetlabs/bin:${PATH}"
 
 tmp_dir=/var/tmp/puppet_modules
 metrics_version='5.1.2'
 pe_tune_version='2.3.0'
-old_metrics_module='pe_metric_curl_cron_jobs'
-new_metrics_module='puppet_metrics_collector'
 
 module_path="$(puppet config print modulepath)" || module_path=
 # This really only checks the return code of mapfile, which is ok
@@ -62,4 +62,4 @@ if [[ "$install_pe_tune" != "false" ]]; then
   mv -f "$_tmp_tune_dir/"*/* "$tmp_dir/pe_tune" || fail "Error installing the 'pe_tune' module, please install manually"
 fi
 
-success '{ "status": "HealthCheck Lite configured successfully" }'
+success '{ "status": "PE Tech Check configured successfully" }'

@@ -12,7 +12,7 @@ has_opt() {
 }
 
 declare PT__installdir
-source "$PT__installdir/healthcheck_lite/files/common.sh"
+source "$PT__installdir/pe_tech_check/files/common.sh"
 [[ $PATH =~ "/opt/puppetlabs/bin" ]] || export PATH="/opt/puppetlabs/bin:${PATH}"
 
 shopt -s nullglob extglob globstar || fail "This utility requires Bash >=4.0"
@@ -21,8 +21,8 @@ trap '_debug $BASH_COMMAND' DEBUG
 (( $EUID == 0 )) || fail "This utility must be run as root"
 
 tmp_dir=/var/tmp/puppet_modules
-output_dir=/var/tmp/health_check_lite
-output_file="$output_dir/health_check_lite.txt"
+output_dir=/var/tmp/pe_tech_check
+output_file="$output_dir/pe_tech_check.txt"
 support_script_output_file="$output_dir/support_script_output.log"
 
 # Dump command help to a file in the interest of speed
@@ -45,7 +45,7 @@ find "$output_dir" -mindepth 1 -delete || fail "Error removing previous files"
 exec 3>&1
 exec >>"$output_file"
 
-echo "Puppet Enterprise HealthCheck Lite: $(date)"
+echo "Puppet Enterprise Tech Check: $(date)"
 echo
 
 grep -i -v UUID /etc/puppetlabs/license.key
@@ -88,4 +88,4 @@ rm !(*gz) || fail "Error building tarball"
 cd - &>/dev/null
 
 success \
-  "{ \"status\": \"HealthCheck Lite complete. Please upload the resultant file to Puppet\", \"file\": \"${output_dir}/${tarball}\" }"
+  "{ \"status\": \"Tech Check complete. Please upload the resultant file to Puppet\", \"file\": \"${output_dir}/${tarball}\" }"
