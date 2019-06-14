@@ -50,7 +50,7 @@ echo
 
 grep -i -v UUID /etc/puppetlabs/license.key
 
-puppet enterprise support "${sup_args[@]}" &> "$support_script_output_file"
+puppet enterprise support "${sup_args[@]}" >"$support_script_output_file"
 
 # Set --modulepath if we installed pe_tune to the temp directory
 if [[ -d $tmp_dir/pe_tune ]]; then
