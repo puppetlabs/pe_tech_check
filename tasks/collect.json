@@ -8,5 +8,5 @@
 
   },
   "supports_noop": false,
-  "files": ["pe_tech_check/files/common.sh"]
+  "files": ["pe_tech_check/files/common.sh", "pe_tech_check/files/get_version.rb"]
 }

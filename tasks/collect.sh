@@ -25,7 +25,15 @@ output_dir=/var/tmp/pe_tech_check
 output_file="$output_dir/pe_tech_check.txt"
 support_script_output_file="$output_dir/support_script_output.log"
 
-# Dump command help to a file in the interest of speed
+# Can we just check for the existance of puppet-enterprise-support instead?
+if "$PT__installdir/pe_tech_check/files/get_version.rb"; then
+  sup_cmd=(puppet enterprise support)
+else
+  export IS_DEBUG='y'
+  sup_cmd=(puppet-enterprise-support)
+fi
+
+## Dump command help to a file in the interest of speed
 _tmp_support="$(mktemp)"
 puppet enterprise support --help &>"$_tmp_support"
 
@@ -50,7 +58,7 @@ echo
 
 grep -i -v UUID /etc/puppetlabs/license.key
 
-puppet enterprise support "${sup_args[@]}" >"$support_script_output_file"
+"${sup_cmd[@]}" "${sup_args[@]}" >"$support_script_output_file"
 
 # Set --modulepath if we installed pe_tune to the temp directory
 if [[ -d $tmp_dir/pe_tune ]]; then
