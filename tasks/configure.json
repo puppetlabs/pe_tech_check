@@ -10,5 +10,6 @@
        "type": "Optional[Variant[Enum['true','false']]]"
      }
   },
+  "files": ["pe_tech_check/files/common.sh"],
   "supports_noop": false
 }

@@ -20,7 +20,27 @@ https://puppet.com/docs/pe/latest/getting_support_for_pe.html#pe-support-script
 
 ### Install the `pe_tech_check` module
 
-To install the `pe_tech_check` module, execute the following command on the Primary Master.
+#### Using Bolt
+
+Bolt is the preferred installation and execution method and can be used either on the master or another machine with connectivity to the master. Firstly, follow the instruction for [installing Bolt](https://puppet.com/docs/bolt/latest/bolt_installing.html). Users are *strongly* encouraged to follow the note about directly installing the package if installing on a PE node.
+
+The following block of code will create a Boltdir under the logged in user's home directory and set up the module:
+
+```bash
+mkdir -p ~/Boltdir
+cd ~/Boltdir
+
+cat >>Puppetfile <<EOF
+mod 'puppetlabs-stdlib'
+mod 'puppetlabs-pe_tech_check'
+EOF
+
+bolt puppetfile install
+```
+
+#### Manually
+
+To manually install the `pe_tech_check` module, execute the following command on the Primary Master.
 
 ```bash
 puppet module install puppetlabs-pe_tech_check --modulepath=/opt/puppetlabs/puppet/modules
@@ -28,11 +48,7 @@ puppet module install puppetlabs-pe_tech_check --modulepath=/opt/puppetlabs/pupp
 
 Doing so will install this module into the base module path, making its tasks available without interfering with other modules.
 
-### Enable the `pe_tech_check` module tasks
-
-If your Primary Master has environment caching enabled (which is true by default if Code Manager is being used), flush the environment cache to enable the tasks in this module.
-
-Run the following command on the Primary Master:
+If your Primary Master has environment caching enabled (which is true by default if Code Manager is being used), flush the environment cache to enable the tasks in this module by running the following command on the Primary Master:
 
 ```bash
 /opt/puppetlabs/puppet/modules/pe_tech_check/scripts/flush_environment_cache.sh
@@ -42,9 +58,19 @@ Run the following command on the Primary Master:
 
 ### Run the `pe_tech_check::configure` task
 
+#### Via Bolt
+
+```bash
+bolt task run pe_tech_check::configure --nodes <master_fqdn>
+```
+
+#### Via the Console
+
 In the Console, run the `pe_tech_check::configure` task, targeting the Primary Master.
 
-Or, from the command line of the Primary Master, run:
+#### Via Puppet Task
+
+From the command line of the Primary Master, run:
 
 ```bash
 puppet task run pe_tech_check::configure --nodes $(puppet config print certname)
@@ -69,9 +95,19 @@ https://github.com/tkishel/pe_tune
 
 ### Run the `pe_tech_check::collect` task
 
+#### Via Bolt
+
+```bash
+bolt task run pe_tech_check::collect --nodes <master_fqdn>
+```
+
+#### Via the Console
+
 In the Console, run the `pe_tech_check::collect` task, targeting the Primary Master.
 
-Or, from the command line of the Primary Master, run:
+#### Via Puppet Task
+
+From the command line of the Primary Master, run:
 
 ```bash
 puppet task run pe_tech_check::collect --nodes $(puppet config print certname)

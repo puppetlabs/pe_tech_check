@@ -1,5 +1,12 @@
 {
   "description": "Collect data for the PE Tech Check service",
-  "parameters": {},
-  "supports_noop": false
+    "parameters": {
+    "ticket": {
+      "description": "Ticket number associated with a support case",
+      "type": "Optional[String[1]]"
+    }
+
+  },
+  "supports_noop": false,
+  "files": ["pe_tech_check/files/common.sh", "pe_tech_check/files/get_version.rb"]
 }
