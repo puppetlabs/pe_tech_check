@@ -6,9 +6,10 @@ declare PT__installdir
 source "$PT__installdir/pe_tech_check/files/common.sh"
 [[ $PATH =~ "/opt/puppetlabs/bin" ]] || export PATH="/opt/puppetlabs/bin:${PATH}"
 
+metrics_version='5.2.0'
+pe_tune_version='3.0.2'
+
 tmp_dir=/var/tmp/puppet_modules
-metrics_version='5.1.2'
-pe_tune_version='2.3.0'
 
 module_path="$(puppet config print modulepath)" || module_path=
 # This really only checks the return code of mapfile, which is ok
