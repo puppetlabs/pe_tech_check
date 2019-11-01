@@ -23,7 +23,8 @@ mapfile -t module_list < <(puppet module list --modulepath="${tmp_dir}:${module_
 }
 
 # The install_* task parameters default to true.
-# Install to $tmp_dir if install_pe_metrics is not false and neither of the collection modules are not installed
+
+# Install to $tmp_dir if install_pe_metrics is not false and neither of the collection modules are not installed.
 if [[ $install_pe_metrics != "false" ]]; then
   if [[ ! ${module_list[@]} =~ 'pe_metric_curl_cron_jobs'|'puppet_metrics_collector' ]]; then
     puppet module install puppetlabs-puppet_metrics_collector \
@@ -47,20 +48,26 @@ fi
     fi
   fi
 
+# Install 'puppet pe tune' to $tmp_dir if install_pe_tune is not false and 'puppet infra tune' is not installed.
 if [[ "$install_pe_tune" != "false" ]]; then
-  [[ -d ${tmp_dir}/pe_tune ]] || mkdir "$tmp_dir/pe_tune"
-  _tmp_tune="$(mktemp)"
-  _tmp_tune_dir="$(mktemp -d)"
+  # The 'puppet infra tune' command is installed in PE 2018.1.3 (and newer) which also includes Puppet 5.5.4.
+  if version_gt $(puppet -V) "5.5.3"; then
+    touch "$tmp_dir/puppet_infra_tune_installed.txt"
+  else
+    [[ -d ${tmp_dir}/pe_tune ]] || mkdir "$tmp_dir/pe_tune"
+    _tmp_tune="$(mktemp)"
+    _tmp_tune_dir="$(mktemp -d)"
 
-  curl -sL -o "$_tmp_tune" "https://github.com/tkishel/pe_tune/archive/${pe_tune_version}.tar.gz" || {
-    fail "Error downloading tarball"
-  }
+    curl -sL -o "$_tmp_tune" "https://github.com/tkishel/pe_tune/archive/${pe_tune_version}.tar.gz" 2>/dev/null || {
+      fail "Error downloading the pe_tune module, please install manually"
+    }
 
-  tar xf "$_tmp_tune" -C "$_tmp_tune_dir" || fail "Error extracting tarball"
+    tar xf "$_tmp_tune" -C "$_tmp_tune_dir" || fail "Error extracting downloaded the pe_tune module, please install manually"
 
-  find "$tmp_dir/pe_tune" -mindepth 1 -delete
-  # Use wildcards so we don't have to care about the version number
-  mv -f "$_tmp_tune_dir/"*/* "$tmp_dir/pe_tune" || fail "Error installing the 'pe_tune' module, please install manually"
+    find "$tmp_dir/pe_tune" -mindepth 1 -delete
+    # Use wildcards so we don't have to care about the version number
+    mv -f "$_tmp_tune_dir/"*/* "$tmp_dir/pe_tune" || fail "Error installing the 'pe_tune' module, please install manually"
+  fi
 fi
 
 success '{ "status": "PE Tech Check configured successfully" }'

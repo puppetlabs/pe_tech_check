@@ -6,7 +6,7 @@
        "type": "Optional[Variant[Enum['true','false']]]"
      },
      "install_pe_tune": {
-       "description": "Install the 'puppet pe tune' module. Defaults to 'true'",
+       "description": "Install the 'puppet pe tune' module, if necessary. Defaults to 'true'",
        "type": "Optional[Variant[Enum['true','false']]]"
      }
   },

@@ -26,7 +26,7 @@ output_file="$output_dir/pe_tech_check.txt"
 support_script_output_file="$output_dir/support_script_output.log"
 
 # Can we just check for the existance of puppet-enterprise-support instead?
-if "$PT__installdir/pe_tech_check/files/get_version.rb"; then
+if version_gt $(puppet -V) "4.5.2"; then
   sup_cmd=(puppet enterprise support)
 else
   export IS_DEBUG='y'
@@ -35,7 +35,7 @@ fi
 
 ## Dump command help to a file in the interest of speed
 _tmp_support="$(mktemp)"
-puppet enterprise support --help &>"$_tmp_support"
+"${sup_cmd[@]}" --help &>"$_tmp_support"
 
 has_opt '--log-age' && sup_args+=("--log-age" "3")
 has_opt '--classifier' && sup_args+=("--classifier")
