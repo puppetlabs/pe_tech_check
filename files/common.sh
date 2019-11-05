@@ -27,6 +27,10 @@ if tput colors &>/dev/null; then
   reset="$(tput sgr0)"
 fi
 
+version_gt() {
+  test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"
+}
+
 _tmp="$(mktemp)"
 exec 2>>"$_tmp"
 
