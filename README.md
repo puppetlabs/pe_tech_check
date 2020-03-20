@@ -101,7 +101,7 @@ https://github.com/tkishel/pe_tune
 #### Via Bolt
 
 ```bash
-bolt task run pe_tech_check::collect --nodes <master_fqdn>
+bolt task run pe_tech_check::collect --targets <master_fqdn>
 ```
 
 #### Via the Console
@@ -113,7 +113,7 @@ In the Console, run the `pe_tech_check::collect` task, targeting the Primary Mas
 From the command line of the Primary Master, run:
 
 ```bash
-puppet task run pe_tech_check::collect --nodes $(puppet config print certname)
+puppet task run pe_tech_check::collect --targets $(puppet config print certname)
 ```
 
 When finished, the `pe_tech_check::collect` task will output a list of files.
