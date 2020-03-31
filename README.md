@@ -33,6 +33,9 @@ cd ~/Boltdir
 cat >>Puppetfile <<EOF
 mod 'puppetlabs-stdlib'
 mod 'puppetlabs-pe_tech_check'
+mod 'tkishel-pe_tune',
+  :git => 'https://github.com/tkishel/pe_tune.git',
+  :branch => 'master'
 EOF
 
 bolt puppetfile install

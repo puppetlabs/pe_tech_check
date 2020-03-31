@@ -20,13 +20,12 @@ trap '_debug $BASH_COMMAND' DEBUG
 
 (( $EUID == 0 )) || fail "This utility must be run as root"
 
-tmp_dir=/var/tmp/puppet_modules
 output_dir=/var/tmp/pe_tech_check
 output_file="$output_dir/pe_tech_check.txt"
 support_script_output_file="$output_dir/support_script_output.log"
 
-# Can we just check for the existance of puppet-enterprise-support instead?
-if "$PT__installdir/pe_tech_check/files/get_version.rb"; then
+# Use the appropriate version of the support script command
+if version_gt $(puppet -V) "4.5.2"; then
   sup_cmd=(puppet enterprise support)
 else
   export IS_DEBUG='y'
@@ -35,7 +34,7 @@ fi
 
 ## Dump command help to a file in the interest of speed
 _tmp_support="$(mktemp)"
-puppet enterprise support --help &>"$_tmp_support"
+"${sup_cmd[@]}" --help &>"$_tmp_support"
 
 has_opt '--log-age' && sup_args+=("--log-age" "3")
 has_opt '--classifier' && sup_args+=("--classifier")
@@ -61,8 +60,9 @@ grep -i -v UUID /etc/puppetlabs/license.key
 "${sup_cmd[@]}" "${sup_args[@]}" >"$support_script_output_file"
 
 # Set --modulepath if we installed pe_tune to the temp directory
-if [[ -d $tmp_dir/pe_tune ]]; then
-  tune_cmd=("puppet" "pe" "tune" "--modulepath" "$tmp_dir")
+# Versions newer than 5.5.3 include tune
+if version_gt $(puppet -V) "5.5.3"; then
+  tune_cmd=("puppet" "pe" "tune" "--modulepath" "./modules")
 else
   tune_cmd=("puppet" "infra" "tune")
 fi
