@@ -1,4 +1,6 @@
 #!/bin/bash
+# shellcheck disable=SC2004
+# shellcheck disable=SC2154
 
 # NOTE: this script can be skipped entirely if the metrics collector is already installed
 # Otherwise, run `bolt task run pe_tech_check::configure --nodes localhost` from inside a Boltdir

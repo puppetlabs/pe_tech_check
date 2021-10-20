@@ -1,4 +1,12 @@
 #!/bin/bash
+# shellcheck disable=SC2145
+# shellcheck disable=SC2154
+# shellcheck disable=SC2199
+# shellcheck disable=SC2164
+# shellcheck disable=SC2128
+# shellcheck disable=SC2004
+# shellcheck disable=SC2154
+# shellcheck disable=SC2103
 
 # Variables that need to be interpolated as part of the command won't show up here
 # Should still be useful
@@ -25,12 +33,8 @@ output_file="$output_dir/pe_tech_check.txt"
 support_script_output_file="$output_dir/support_script_output.log"
 
 # Use the appropriate version of the support script command
-if version_gt $(puppet -V) "4.5.2"; then
   sup_cmd=(puppet enterprise support)
-else
   export IS_DEBUG='y'
-  sup_cmd=(puppet-enterprise-support)
-fi
 
 ## Dump command help to a file in the interest of speed
 _tmp_support="$(mktemp)"
@@ -55,17 +59,19 @@ exec >>"$output_file"
 echo "Puppet Enterprise Tech Check: $(date)"
 echo
 
-grep -i -v UUID /etc/puppetlabs/license.key
+# Test for licence key to have cleaner report when key is missing
+if [ -f "/etc/puppetlabs/license.key" ]; then
+    grep -i -v UUID /etc/puppetlabs/license.key
+else 
+    echo "No Licence Installed"
+fi
+
 
 "${sup_cmd[@]}" "${sup_args[@]}" >"$support_script_output_file"
 
 # Set --modulepath if we installed pe_tune to the temp directory
 # Versions newer than 5.5.3 include tune
-if version_gt $(puppet -V) "5.5.3"; then
-  tune_cmd=("puppet" "pe" "tune" "--modulepath" "./modules")
-else
   tune_cmd=("puppet" "infra" "tune")
-fi
 
 "${tune_cmd[@]}"
 "${tune_cmd[@]}" --current
@@ -89,10 +95,10 @@ cd "$output_dir"
 # We previously removed everything, so this should be the only .tar.gz
 tarball=(*gz)
 [[ -e $tarball ]] || fail "Error running support script"
-gunzip "$tarball" || fail "Error building tarball"
-tar uf "${tarball%*.gz}" !(*tar) "$_tmp" "$_tmp.debug" || fail "Error building tarball"
-gzip "${tarball%*.gz}" || fail "Error building tarball"
-rm !(*gz) || fail "Error building tarball"
+gunzip "$tarball" || fail "Error decompressing Support tarball"
+tar uvf "${tarball%*.gz}" !(*tar) "$_tmp" "$_tmp.debug" 
+gzip "${tarball%*.gz}" || fail "Error compressing tarball"
+rm !(*gz) || fail "Error Cleaning tarball build files"
 cd - &>/dev/null
 
 success \

@@ -1,4 +1,6 @@
 #!/bin/bash
+# shellcheck disable=SC2034
+# shellcheck disable=SC2086
 
 # TODO: helper task?
 
@@ -7,7 +9,7 @@ fail() {
   # Print a stderr: entry if there were anything printed to stderr
   if [[ -s $_tmp ]]; then
     # Hack to try and output valid json by replacing newlines with spaces.
-    echo "{ \"status\": \"error\", \"message\": \"$1\", \"stderr\": \"$(tr '\n' ' ' <$_tmp)\" }"
+     echo "{ \"status\": \"error\", \"message\": \"$1\", \"stderr\": \"$(tr '\n' ' ' <$_tmp)\" }"
   else
     echo "{ \"status\": \"error\", \"message\": \"$1\" }"
   fi
@@ -26,10 +28,6 @@ if tput colors &>/dev/null; then
   red="$(tput setaf 1)"
   reset="$(tput sgr0)"
 fi
-
-version_gt() {
-  test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"
-}
 
 _tmp="$(mktemp)"
 exec 2>>"$_tmp"

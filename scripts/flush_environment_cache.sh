@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2145
 #
 # Flushes the environment cache
 #
