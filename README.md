@@ -69,11 +69,16 @@ Pe_tech_check consumes Metric Provided by Puppet_Metrics_Collector Module, Puppe
 
 To enable metrics collector in 2019.8.8 set the following parameters to true:
 
-```
-puppet_enterprise::enable_metrics_collection
-puppet_enterprise::enable_system_metrics_collection
+Hiera classification example 
 
 ```
+puppet_enterprise::enable_metrics_collection:: true
+puppet_enterprise::enable_system_metrics_collection:: true
+
+```
+
+Alternativly these parameters can be set in the [console](https://puppet.com/docs/pe/2021.3/grouping_and_classifying_nodes.html), in a node group which covers your PE infrastructure nodes
+
 
 If using a supported version of Puppet enterprise prior to 2019.8.8 or 2021.3 ensure you have Puppet Metrics Collector installed and enabled using the documentation from the [Forge](https://forge.puppet.com/modules/puppetlabs/puppet_metrics_collector) 
 
@@ -100,7 +105,7 @@ In the Console, run the `pe_tech_check::collect` task, targeting the Primary Ser
 From the command line of the Primary Server, run:
 
 ```bash
-puppet task run pe_tech_check::collect --targets $(puppet config print certname)
+puppet task run pe_tech_check::collect --nodes $(puppet config print certname)
 ```
 
 When finished, the `pe_tech_check::collect` task will output a list of files.
