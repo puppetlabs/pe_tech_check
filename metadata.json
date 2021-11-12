@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-pe_tech_check",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Puppet Enterprise",
   "summary": "Provides Tasks to capture data for PE Tech Check",
   "license": "Apache-2.0",
@@ -10,7 +10,7 @@
   "dependencies": [
 
   ],
- "operatingsystem_support": [
+  "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
@@ -57,7 +57,7 @@
     {
       "name": "puppet",
       "version_requirement": ">= 6.16.0 < 8.0.0"
-    }    
+    }
   ],
   "pdk-version": "2.1.1",
   "template-url": "pdk-default#2.1.1",
